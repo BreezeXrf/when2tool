@@ -1,5 +1,6 @@
 import ast
 import json
+import os
 import random
 import re
 import string
@@ -103,7 +104,11 @@ class HFAgentBackend:
         device="cuda",
         enable_thinking=None,
     ):
-        self.device = torch.device(device if torch.cuda.is_available() else "cpu")
+        # honor an explicit --device mps on Apple Silicon; original fell back to CPU without CUDA
+        if device == "mps" and torch.backends.mps.is_available():
+            self.device = torch.device("mps")
+        else:
+            self.device = torch.device(device if torch.cuda.is_available() else "cpu")
         self.max_new_tokens = max_new_tokens
         self.enable_thinking = enable_thinking
 
@@ -211,6 +216,9 @@ class VLLMAgentBackend:
 
         self.llm = LLM(
             model=model_path,
+            # VLLM_ENFORCE_EAGER=1 skips torch.compile/CUDA-graph capture (workaround for
+            # "Worker proc VllmWorker-N died unexpectedly" after Dynamo compile). Default off.
+            enforce_eager=os.environ.get("VLLM_ENFORCE_EAGER", "0") == "1",
             tensor_parallel_size=tensor_parallel_size,
             max_model_len=max_model_len,
             dtype=dtype,
