@@ -219,6 +219,9 @@ class VLLMAgentBackend:
             # VLLM_ENFORCE_EAGER=1 skips torch.compile/CUDA-graph capture (workaround for
             # "Worker proc VllmWorker-N died unexpectedly" after Dynamo compile). Default off.
             enforce_eager=os.environ.get("VLLM_ENFORCE_EAGER", "0") == "1",
+            # VLLM_DISABLE_CUSTOM_AR=1: fall back to NCCL all-reduce (known fix for multi-GPU
+            # worker deaths at the first collective in some container/driver combos). Default off.
+            disable_custom_all_reduce=os.environ.get("VLLM_DISABLE_CUSTOM_AR", "0") == "1",
             tensor_parallel_size=tensor_parallel_size,
             max_model_len=max_model_len,
             dtype=dtype,
