@@ -153,8 +153,8 @@ def main():
                         choices=["no_reasoning", "reasoning"])
     parser.add_argument("--max_rounds", type=int, default=10)
     parser.add_argument("--max_new_tokens", type=int, default=2048)
-    parser.add_argument("--tensor_parallel_size", type=int, default=4)
-    parser.add_argument("--max_model_len", type=int, default=32768)
+    parser.add_argument("--tensor_parallel_size", type=int, default=int(os.environ.get("VLLM_TP", "4")))
+    parser.add_argument("--max_model_len", type=int, default=int(os.environ.get("VLLM_MAX_LEN", "32768")))
     parser.add_argument("--record_mode", type=str, default="lite")
     parser.add_argument("--n_runs", type=int, default=3,
                         help="Number of evaluation runs. Results are nested by run_id.")

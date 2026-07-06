@@ -324,8 +324,8 @@ def main():
     parser.add_argument("--device", type=str, default="cuda")
     parser.add_argument("--max_new_tokens", type=int, default=2048)
     parser.add_argument("--max_rounds", type=int, default=12)
-    parser.add_argument("--tensor_parallel_size", type=int, default=4)
-    parser.add_argument("--max_model_len", type=int, default=32768)
+    parser.add_argument("--tensor_parallel_size", type=int, default=int(os.environ.get("VLLM_TP", "4")))
+    parser.add_argument("--max_model_len", type=int, default=int(os.environ.get("VLLM_MAX_LEN", "32768")))
     args = parser.parse_args()
 
     resolved_path, was_alias = resolve_model_path(args.model_path)
