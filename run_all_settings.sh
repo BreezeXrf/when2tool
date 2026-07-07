@@ -46,7 +46,7 @@ python src/run_eval.py \
   --prompt_mode "$PROMPT_MODE" \
   --reasoning_mode "$REASONING_MODE" \
   --output_path "${OUT_DIR}/" \
-  --tensor_parallel_size 4 \
+  --tensor_parallel_size "${VLLM_TP:-4}" \
   --n_runs "$N_RUNS" \
   $ENVS_ARG
 
