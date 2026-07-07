@@ -222,6 +222,9 @@ class VLLMAgentBackend:
             # VLLM_DISABLE_CUSTOM_AR=1: fall back to NCCL all-reduce (known fix for multi-GPU
             # worker deaths at the first collective in some container/driver combos). Default off.
             disable_custom_all_reduce=os.environ.get("VLLM_DISABLE_CUSTOM_AR", "0") == "1",
+            # VLLM_GPU_UTIL: KV-pool sizing (single-80GB 32B needs >=0.95 for batching headroom
+            # at max_model_len 16384; vllm requires pool >= max_len). Default = vllm's 0.9.
+            gpu_memory_utilization=float(os.environ.get("VLLM_GPU_UTIL", "0.9")),
             tensor_parallel_size=tensor_parallel_size,
             max_model_len=max_model_len,
             dtype=dtype,
