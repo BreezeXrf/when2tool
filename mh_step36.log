@@ -1,0 +1,32 @@
+nohup: ignoring input
+========================================================================
+  MULTI-HOP: Qwen3-32B  STEPS: 3-6
+========================================================================
+[Step 3/6] Training probe...
+Regularization: reg=10000.0 -> C=0.0001
+Loading data from ./probe_data/Qwen3-32B_multihop (mode=no_reasoning)
+  Train: 180 samples, 65 layers, dim=5120
+  Test:  450 samples
+  Tool necessary: train=86/180, test=224/450
+
+All-layers mode: 332800 features (65 layers × 5120 dim)
+
+============================================================
+All-layers probe (332800 dims, C=0.0001)
+  Train accuracy: 0.9667  AUROC: 0.9946
+  Test  accuracy: 0.8200  AUROC: 0.9166
+
+Per-difficulty (test):
+  easy    : acc=0.8200  auroc=0.9514  n=150  necessary=38
+  medium  : acc=0.7333  auroc=0.8013  n=150  necessary=62
+  hard    : acc=0.9067  auroc=0.9194  n=150  necessary=124
+
+Per-environment (test):
+  CalculatorEnv            : acc=0.9000  auroc=0.9858  n=150  necessary=64
+  CodeExecutorEnv          : acc=0.7733  auroc=0.8200  n=150  necessary=43
+  RetrieverEnv             : acc=0.7867  auroc=0.8601  n=150  necessary=117
+
+Saved all-layers probe to ./probe_data/Qwen3-32B_multihop/probe_no_reasoning.pt
+Saved results to ./probe_data/Qwen3-32B_multihop/probe_results_no_reasoning.json
+[Step 4/6] Transfer: single-hop probe → multi-hop...
+  ERROR: Run single-hop pipeline first: ./probe_data/Qwen3-32B/probe_no_reasoning.pt not found
