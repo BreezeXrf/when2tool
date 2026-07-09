@@ -214,6 +214,7 @@ class VLLMAgentBackend:
         if top_k is not None:
             self.generation_config.top_k = int(top_k)
 
+        self._max_model_len = max_model_len
         self.llm = LLM(
             model=model_path,
             # VLLM_ENFORCE_EAGER=1 skips torch.compile/CUDA-graph capture (workaround for
@@ -273,10 +274,35 @@ class VLLMAgentBackend:
         if prefills:
             prompts = [p + (pf or "") for p, pf in zip(prompts, prefills)]
         params = self._sampling_params()
-        raw = self.llm.generate(prompts=prompts, sampling_params=params)
+        # OVERLENGTH GUARD (single-GPU runs cap max_model_len below the 32k default): vllm raises
+        # on ANY over-length prompt, killing the whole setting. Pre-filter those requests, emit an
+        # empty "overlength" output for them (scored as a failure), keep the batch alive.
+        budget = getattr(self, "_max_model_len", 0) - self.max_new_tokens
+        keep_idx, skip = [], 0
+        if budget > 0:
+            for i, p in enumerate(prompts):
+                if len(self.tokenizer(p).input_ids) <= budget:
+                    keep_idx.append(i)
+                else:
+                    skip += 1
+        else:
+            keep_idx = list(range(len(prompts)))
+        if skip:
+            print(f"[overlength-guard] skipped {skip}/{len(prompts)} prompts > {budget} tokens")
+        raw_kept = self.llm.generate(prompts=[prompts[i] for i in keep_idx],
+                                     sampling_params=params) if keep_idx else []
+        raw = [None] * len(prompts)
+        for i, r in zip(keep_idx, raw_kept):
+            raw[i] = r
 
         outs = []
         for idx, (prompt_text, r) in enumerate(zip(prompts, raw)):
+            if r is None:
+                out = _normalize_generation_output("")
+                out["prompt_text"] = prompt_text
+                out["finish_reason"] = "overlength"
+                outs.append(out)
+                continue
             gen_text = r.outputs[0].text if r.outputs else ""
             # Prepend the prefill to the raw output so downstream parsing sees the full response
             pf = (prefills[idx] or "") if prefills else ""
