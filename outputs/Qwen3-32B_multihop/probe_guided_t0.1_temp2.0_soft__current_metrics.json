@@ -1,0 +1,109 @@
+{
+  "run_0": {
+    "n_tasks": 450,
+    "accuracy": 0.8267,
+    "avg_tool_calls": 3.32,
+    "per_difficulty": {
+      "easy": {
+        "accuracy": 0.9,
+        "avg_tool_calls": 3.3467,
+        "n": 150
+      },
+      "medium": {
+        "accuracy": 0.8867,
+        "avg_tool_calls": 3.3467,
+        "n": 150
+      },
+      "hard": {
+        "accuracy": 0.6933,
+        "avg_tool_calls": 3.2667,
+        "n": 150
+      }
+    }
+  },
+  "run_1": {
+    "n_tasks": 450,
+    "accuracy": 0.8556,
+    "avg_tool_calls": 3.3222,
+    "per_difficulty": {
+      "easy": {
+        "accuracy": 0.9,
+        "avg_tool_calls": 3.3467,
+        "n": 150
+      },
+      "medium": {
+        "accuracy": 0.8867,
+        "avg_tool_calls": 3.3133,
+        "n": 150
+      },
+      "hard": {
+        "accuracy": 0.78,
+        "avg_tool_calls": 3.3067,
+        "n": 150
+      }
+    }
+  },
+  "run_2": {
+    "n_tasks": 450,
+    "accuracy": 0.8667,
+    "avg_tool_calls": 3.3822,
+    "per_difficulty": {
+      "easy": {
+        "accuracy": 0.92,
+        "avg_tool_calls": 3.6133,
+        "n": 150
+      },
+      "medium": {
+        "accuracy": 0.92,
+        "avg_tool_calls": 3.3267,
+        "n": 150
+      },
+      "hard": {
+        "accuracy": 0.76,
+        "avg_tool_calls": 3.2067,
+        "n": 150
+      }
+    }
+  },
+  "mean": {
+    "n_runs": 3,
+    "accuracy": 0.8497,
+    "accuracy_std": 0.0169,
+    "avg_tool_calls": 3.3415,
+    "avg_tool_calls_std": 0.0288,
+    "per_difficulty": {
+      "easy": {
+        "accuracy": 0.9067,
+        "accuracy_std": 0.0094,
+        "avg_tool_calls": 3.4356,
+        "avg_tool_calls_std": 0.1257,
+        "n": 150
+      },
+      "medium": {
+        "accuracy": 0.8978,
+        "accuracy_std": 0.0157,
+        "avg_tool_calls": 3.3289,
+        "avg_tool_calls_std": 0.0137,
+        "n": 150
+      },
+      "hard": {
+        "accuracy": 0.7444,
+        "accuracy_std": 0.0371,
+        "avg_tool_calls": 3.26,
+        "avg_tool_calls_std": 0.0411,
+        "n": 150
+      }
+    }
+  },
+  "config": {
+    "threshold": 0.1,
+    "prompt_mode": "current",
+    "probe_mode": "no_reasoning",
+    "probe_layer": "all",
+    "prefill_stats": {
+      "skip_tool": 0,
+      "use_tool": 450
+    },
+    "n_runs": 3
+  }
+}

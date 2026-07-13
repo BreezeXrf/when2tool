@@ -1,0 +1,43 @@
+{
+  "source_probe": "./probe_data/Qwen3-32B/probe_no_reasoning.pt",
+  "target_data": "./probe_data/Qwen3-32B_multihop",
+  "mode": "no_reasoning",
+  "source_layer": "all",
+  "n_tasks": 450,
+  "accuracy": 0.5155555555555555,
+  "auroc": 0.5853547724399495,
+  "per_env": {
+    "CalculatorEnv": {
+      "n": 150,
+      "acc": 0.68,
+      "auroc": 0.9484011627906977
+    },
+    "CodeExecutorEnv": {
+      "n": 150,
+      "acc": 0.2866666666666667,
+      "auroc": 0.7278852423386221
+    },
+    "RetrieverEnv": {
+      "n": 150,
+      "acc": 0.58,
+      "auroc": 0.7547267547267548
+    }
+  },
+  "per_difficulty": {
+    "easy": {
+      "n": 150,
+      "acc": 0.43333333333333335,
+      "auroc": 0.30615601503759393
+    },
+    "hard": {
+      "n": 150,
+      "acc": 0.82,
+      "auroc": 0.16284119106699751
+    },
+    "medium": {
+      "n": 150,
+      "acc": 0.29333333333333333,
+      "auroc": 0.31085043988269795
+    }
+  }
+}
